@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Aeronaves</title>
+
+    <!-- Bootstrap y estilos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Librería para exportar a Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="container mt-4">
+    <h2 class="text-center mb-4">📦 Sistema de Inventario de Aeronaves</h2>
+
+    <!-- Botón para ir a la página de Inventarios -->
+    <a href="inventarios.html" class="btn btn-info w-50 mx-auto d-block mt-4 text-white fs-5 py-2 px-4 rounded-pill shadow-lg">
+        <strong>Ir a Inventarios</strong>
+    </a>
+
+    <!-- Formulario para agregar elementos manualmente -->
+    <form id="inventarioForm" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" id="placa" class="form-control" placeholder="Placa" required>
+        </div>
+        <div class="col-md-2">
+            <input type="date" id="fecha" class="form-control" required>
+        </div>
+        <div class="col-md-3">
+            <input type="text" id="estructura" class="form-control" placeholder="Estructura" required oninput="detectarTipo()">
+        </div>
+        <div class="col-md-2">
+            <select id="tipo" class="form-select" disabled>
+                <option value="">Seleccionar...</option>
+                <option value="Modificación">Modificación</option>
+                <option value="Montaje">Montaje</option>
+                <option value="Desmontaje">Desmontaje</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select id="hangar" class="form-select" required>
+                <option value="">Seleccionar Hangar...</option>
+                <option value="1">Hangar 1</option>
+                <option value="2">Hangar 2</option>
+                <option value="3">Hangar 3</option>
+                <option value="4">Hangar 4</option>
+                <option value="5">Hangar 5</option>
+                <option value="6">Hangar 6</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Agregar</button>
+        </div>
+    </form>
+
+    <!-- Tabla de totales por hangar -->
+    <h3 class="mt-4">Totales por Hangar</h3>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Hangar</th>
+                <th>Modificación</th>
+                <th>Montaje</th>
+                <th>Desmontaje</th>
+                <th>Total Estructuras</th>
+            </tr>
+        </thead>
+        <tbody id="totalesPorHangar">
+            <tr>
+                <td>Hangar 1</td>
+                <td id="hangar1-mod">0</td>
+                <td id="hangar1-mont">0</td>
+                <td id="hangar1-desmont">0</td>
+                <td id="hangar1-total">0</td>
+            </tr>
+            <tr>
+                <td>Hangar 2</td>
+                <td id="hangar2-mod">0</td>
+                <td id="hangar2-mont">0</td>
+                <td id="hangar2-desmont">0</td>
+                <td id="hangar2-total">0</td>
+            </tr>
+            <tr>
+                <td>Hangar 3</td>
+                <td id="hangar3-mod">0</td>
+                <td id="hangar3-mont">0</td>
+                <td id="hangar3-desmont">0</td>
+                <td id="hangar3-total">0</td>
+            </tr>
+            <tr>
+                <td>Hangar 4</td>
+                <td id="hangar4-mod">0</td>
+                <td id="hangar4-mont">0</td>
+                <td id="hangar4-desmont">0</td>
+                <td id="hangar4-total">0</td>
+            </tr>
+            <tr>
+                <td>Hangar 5</td>
+                <td id="hangar5-mod">0</td>
+                <td id="hangar5-mont">0</td>
+                <td id="hangar5-desmont">0</td>
+                <td id="hangar5-total">0</td>
+            </tr>
+            <tr>
+                <td>Hangar 6</td>
+                <td id="hangar6-mod">0</td>
+                <td id="hangar6-mont">0</td>
+                <td id="hangar6-desmont">0</td>
+                <td id="hangar6-total">0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Búsqueda en el inventario -->
+    <div class="mb-3">
+        <input type="text" id="buscar" class="form-control" placeholder="Buscar por placa o estructura..." oninput="filtrarInventario()">
+    </div>
+
+    <!-- Contenedor del inventario -->
+    <div id="inventarioContainer" class="row mt-4"></div>
+
+    <!-- Botón para exportar el inventario -->
+    <button class="btn btn-success mt-3" onclick="exportarExcel()">Exportar a Excel 📄</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
